@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Windows 装机指南</title>
+
+<!-- 网页标签页图标 -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23007aff' /%3E%3Cstop offset='100%25' stop-color='%235856d6' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)' /%3E%3Cpath d='M50 25 v35 M35 45 l15 15 l15 -15' fill='none' stroke='%23fff' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M30 75 h40' fill='none' stroke='%23fff' stroke-width='8' stroke-linecap='round'/%3E%3C/svg%3E">
+
+<style>
+/* ================= 基础与主题变量 ================= */
+:root {
+  --bg-color: #f7f9ff;
+  --bg-gradient: linear-gradient(135deg, #eef2fc 0%, #f5eaff 40%, #e6f0fa 100%);
+  
+  --glass-white: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(255, 255, 255, 1);
+  --glass-shadow: 0 8px 32px rgba(31, 38, 135, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  --glass-shadow-hover: 0 12px 40px rgba(31, 38, 135, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  
+  --text-main: #1d1d1f;
+  --text-sub: #86868b;
+  
+  --accent-blue: #007aff;
+  --accent-blue-bg: #ebf4ff;
+  --accent-green: #34c759;
+  --accent-green-bg: #eaf9ed;
+  --accent-red: #ff3b30;
+  
+  --radius-xl: 28px;
+  --radius-lg: 20px;
+  --radius-md: 14px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+  background-color: var(--bg-color);
+  background-image: var(--bg-gradient);
+  background-attachment: fixed;
+  color: var(--text-main);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  padding-bottom: 80px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ================= 顶部导航栏 ================= */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+}
+
+.nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 64px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.brand {
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.nav-links::-webkit-scrollbar { display: none; }
+
+.nav-links a {
+  padding: 6px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-sub);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  background: var(--accent-blue-bg);
+  color: var(--accent-blue);
+}
+
+/* ================= 头部 Hero ================= */
+.hero {
+  padding: 120px 24px 48px;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: clamp(32px, 5vw, 46px);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -1px;
+  margin-bottom: 16px;
+}
+
+.hero h1 span {
+  background: linear-gradient(90deg, #007aff, #5856d6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero p {
+  font-size: 16px;
+  color: var(--text-sub);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ================= 主体布局 ================= */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.section {
+  margin-bottom: 48px;
+  animation: fadeIn 0.4s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-left: 12px;
+}
+
+.section-num {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--accent-blue);
+  background: #fff;
+  padding: 4px 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.section-header h2 {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+/* ================= 大卡片容器 ================= */
+.glass-panel {
+  background: var(--glass-white);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--glass-shadow);
+  padding: 28px;
+  margin-bottom: 24px;
+  transition: box-shadow 0.3s ease;
+}
+
+.glass-panel:hover {
+  box-shadow: var(--glass-shadow-hover);
+}
+
+/* ================= 默认首页介绍 ================= */
+.home-intro {
+  text-align: center;
+  padding: 40px 20px;
+}
+.home-intro h2 {
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 16px;
+}
+.home-intro p {
+  color: var(--text-sub);
+  font-size: 16px;
+  margin-bottom: 40px;
+}
+.home-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+.home-card {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid #fff;
+  border-radius: var(--radius-lg);
+  padding: 32px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+}
+.home-card:hover {
+  background: #fff;
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.06);
+}
+.home-card .icon {
+  font-size: 40px;
+  margin-bottom: 16px;
+}
+.home-card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.home-card p {
+  font-size: 14px;
+  color: var(--text-sub);
+  margin-bottom: 0;
+}
+
+/* ================= 系统对比面板 ================= */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.compare-box {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid #f0f0f0;
+  border-radius: var(--radius-lg);
+  padding: 20px;
+}
+
+.compare-box h4 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.compare-box.good h4 { color: var(--accent-green); }
+.compare-box.bad h4 { color: var(--accent-red); }
+
+.compare-box ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.compare-box li {
+  font-size: 14px;
+  color: var(--text-main);
+  display: flex;
+  gap: 8px;
+}
+
+/* ================= 内部小卡片网格 ================= */
+.inner-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.inner-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+}
+
+.inner-header .title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.inner-header .title-num {
+  font-size: 13px;
+  color: var(--accent-blue);
+  background: var(--accent-blue-bg);
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.inner-header .tag {
+  font-size: 12px;
+  color: var(--text-sub);
+  background: #f5f5f7;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+/* 软件项目卡片 */
+.sw-card {
+  background: #ffffff;
+  border: 1px solid #f2f2f7;
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sw-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+}
+
+.sw-title {
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sw-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  background: #f0f0f5;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+.sw-desc {
+  font-size: 13px;
+  color: var(--text-sub);
+  line-height: 1.5;
+  flex-grow: 1;
+}
+
+/* ================= 按钮体系 ================= */
+.sw-links {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-icon {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.btn-official {
+  background: var(--accent-blue-bg);
+  color: var(--accent-blue);
+}
+.btn-official .btn-icon { background: var(--accent-blue); }
+.btn-official:hover { background: #dbeafe; }
+
+.btn-dl {
+  background: var(--accent-green-bg);
+  color: var(--accent-green);
+}
+.btn-dl .btn-icon { background: var(--accent-green); }
+.btn-dl:hover { background: #d1f2d9; }
+
+/* ================= 响应式适配 ================= */
+@media (max-width: 768px) {
+  .compare-grid, .inner-grid {
+    grid-template-columns: 1fr;
+  }
+  .glass-panel {
+    padding: 20px;
+  }
+  .nav-inner {
+    padding: 0 16px;
+    gap: 16px;
+  }
+  .brand { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- 导航栏 -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="brand" onclick="navigateTo('#home')">💻 装机指南</div>
+    <div class="nav-links">
+      <a onclick="navigateTo('#sys-genuine')">💿原版系统💿</a>
+      <a onclick="navigateTo('#sys-ghost')">⚡第三方系统⚡</a>
+      <a onclick="navigateTo('#software')">📦常用软件📦</a>
+    </div>
+  </div>
+</nav>
+
+<!-- 头部 -->
+<header class="hero">
+  <h1>Windows 系统安装与<br><span>常用软件部署指南</span></h1>
+  <p>纯净原版 vs 第三方 GHO 系统，以及常用软件下载汇总</p>
+</header>
+
+<main class="container">
+
+  <!-- ================== 默认首页（介绍与功能） ================== -->
+  <section id="home" class="section">
+    <div class="glass-panel home-intro">
+      <h2>欢迎使用装机指南</h2>
+      <p>请通过顶部导航栏选择您需要查看的内容，或点击下方卡片快速开始。</p>
+      
+      <div class="home-cards">
+        <div class="home-card" onclick="navigateTo('#sys-genuine')">
+          <div class="icon">💿</div>
+          <h3>纯净原版系统</h3>
+          <p>微软官方 ISO 镜像安装，干净、安全、无预装。</p>
+        </div>
+        <div class="home-card" onclick="navigateTo('#sys-ghost')">
+          <div class="icon">⚡</div>
+          <h3>第三方 GHO 系统</h3>
+          <p>PE 一键还原，快速省事，适合临时救急。</p>
+        </div>
+        <div class="home-card" onclick="navigateTo('#software')">
+          <div class="icon">📦</div>
+          <h3>常用软件下载</h3>
+          <p>涵盖社交、学习、娱乐等各类软件官网与下载。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================== 一、纯净原版系统 ================== -->
+  <section id="sys-genuine" class="section" style="display: none;">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2>装所谓“正版”系统（纯净原版）</h2>
+    </div>
+
+    <div class="glass-panel">
+      <p style="font-size: 15px; margin-bottom: 24px; color: var(--text-main); line-height: 1.8;">
+        从 <a href="https://next.itellyou.cn/" target="_blank" style="color: var(--accent-blue); font-weight: bold;">ITELLYOU</a> 下载微软官方原版 ISO 镜像，用 Rufus 或微软官方工具制作启动 U 盘，然后全新安装。该站本身不是微软官网，但它收录的是微软官方发布、未经修改的原版安装文件，并公开校验值供用户核对。
+      </p>
+
+      <div class="compare-grid">
+        <div class="compare-box good">
+          <h4>✅ 好处</h4>
+          <ul>
+            <li><span>•</span> <b>微软原版镜像</b>：无预装软件、无主页锁定、无推广程序</li>
+            <li><span>•</span> <b>组件完整无删减</b>，更新、驱动、软件兼容性最好</li>
+            <li><span>•</span> 能掌握制作启动盘的<b>完整流程</b></li>
+          </ul>
+        </div>
+        <div class="compare-box bad">
+          <h4>⚠️ 坏处</h4>
+          <ul>
+            <li><span>•</span> 不带驱动、运行库，<b>装完要自己补驱动和激活</b></li>
+            <li><span>•</span> 镜像本身未激活，需自行通过官方渠道或已有授权激活</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="margin-top: 28px;">
+        <div class="inner-grid">
+          <div class="sw-card">
+            <div class="sw-title"><span class="sw-icon">①</span> Rufus</div>
+            <div class="sw-desc">轻量级 U 盘启动盘制作工具，支持原版 ISO 直写。</div>
+            <div class="sw-links">
+              <a href="https://rufus.ie/zh" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 官网</a>
+              <a href="https://github.com/pbatard/rufus/releases/download/v4.16/rufus-4.16.exe" target="_blank" class="btn btn-dl"><span class="btn-icon">↓</span> 下载 v4.16</a>
+            </div>
+          </div>
+          <div class="sw-card">
+            <div class="sw-title"><span class="sw-icon">②</span> 迅雷</div>
+            <div class="sw-desc">用于下载 ISO 镜像等大文件。</div>
+            <div class="sw-links">
+              <a href="https://dl.xunlei.com/" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 官网</a>
+              <a href="https://down.sandai.net/thunder11/XunLeiWebSetup25.1.40.1705dl.exe" target="_blank" class="btn btn-dl"><span class="btn-icon">↓</span> 下载</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================== 二、第三方系统 ================== -->
+  <section id="sys-ghost" class="section" style="display: none;">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2>装所谓“盗版”系统（第三方广告）</h2>
+    </div>
+
+    <div class="glass-panel">
+      <p style="font-size: 15px; margin-bottom: 24px; color: var(--text-main); line-height: 1.8;">
+        从「<a href="https://www.xitongzhijia.com/" target="_blank" style="color: var(--accent-blue); font-weight: bold;">系统之家</a>」等站点下载 GHO 或修改版系统镜像，用其自带的 U 盘启动盘工具制作 PE 启动盘，进入 PE 后一键还原或一键装机。核心卖点是「<b>快</b>」和「<b>省事</b>」。
+      </p>
+
+      <div class="compare-grid">
+        <div class="compare-box good">
+          <h4>✅ 好处</h4>
+          <ul>
+            <li><span>•</span> <b>一键完成</b>，容易操作</li>
+            <li><span>•</span> GHO 系统常集成驱动、运行库，<b>装完多数电脑能直接用</b></li>
+            <li><span>•</span> PE 里自带维护工具</li>
+            <li><span>•</span> 适合临时救急、快速恢复旧机</li>
+          </ul>
+        </div>
+        <div class="compare-box bad">
+          <h4>⚠️ 坏处</h4>
+          <ul>
+            <li><span>•</span> 可能装软件、锁主页、改搜索引擎，<b>非常不干净</b></li>
+            <li><span>•</span> 曾被安全厂商点名存在<b>木马 / 恶意推广</b>行为</li>
+            <li><span>•</span> 系统之家的 GHO / 修改版<b>非微软原版</b></li>
+            <li><span>•</span> 后续可能花更多时间清理</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================== 三、常用软件 ================== -->
+  <section id="software" class="section" style="display: none;">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2>安装常见软件</h2>
+    </div>
+    
+    <p style="color: var(--text-sub); font-size: 14px; margin-bottom: 24px; padding-left: 12px;">
+      * 版本号按照编辑此网页日期计算，即 2026 年 11 月 22 日
+    </p>
+
+    <div class="glass-panel">
+      <div class="inner-grid">
+        <div class="sw-card">
+          <div class="sw-title"><span class="sw-icon">1</span> DiskGenius</div>
+          <div class="sw-desc">磁盘分区、数据恢复与备份工具。</div>
+          <div class="sw-links">
+            <a href="https://www.diskgenius.cn/" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 官网</a>
+            <a href="https://eassos.lanzoue.com/DG64" target="_blank" class="btn btn-dl"><span class="btn-icon">↓</span> 下载</a>
+          </div>
+        </div>
+        <div class="sw-card">
+          <div class="sw-title"><span class="sw-icon">2</span> 迅雷</div>
+          <div class="sw-desc">常用下载工具。</div>
+          <div class="sw-links">
+            <a href="https://dl.xunlei.com/" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 官网</a>
+            <a href="https://down.sandai.net/thunder11/XunLeiWebSetup25.1.40.1705dl.exe" target="_blank" class="btn btn-dl"><span class="btn-icon">↓</span> 下载</a>
+          </div>
+        </div>
+        <div class="sw-card">
+          <div class="sw-title"><span class="sw-icon">3</span> Microsoft Office</div>
+          <div class="sw-desc">采用 Office Tool Plus 部署工具安装。</div>
+          <div class="sw-links">
+            <a href="https://www.officetool.plus/zh-cn/" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 发布页</a>
+            <a href="https://www.officetool.plus/zh-cn/introduction/download.html" target="_blank" class="btn btn-dl"><span class="btn-icon">↓</span> 下载页</a>
+          </div>
+        </div>
+        <div class="sw-card">
+          <div class="sw-title"><span class="sw-icon">4</span> KMS 激活工具</div>
+          <div class="sw-desc">用于 KMS 激活 MSOffice 和 Windows。非正规激活方式。</div>
+          <div class="sw-links">
+            <a href="https://github.com/zbezj/HEU_KMS_Activator/releases" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 发布页</a>
+            <a href="https://benson88.lanzn.com/ioVZb1p41dlg" target="_blank" class="btn btn-dl"><span class="btn-icon">↓</span> 下载页</a>
+          </div>
+        </div>
+        <div class="sw-card">
+          <div class="sw-title"><span class="sw-icon">5</span> WPS Office</div>
+          <div class="sw-desc">国产办公软件套件。</div>
+          <div class="sw-links">
+            <a href="https://www.wps.cn/" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 官网</a>
+            <a href="https://official-package.wpscdn.cn/wps/download/WPS_Setup_29690.exe" target="_blank" class="btn btn-dl"><span class="btn-icon">↓</span> 下载</a>
+          </div>
+        </div>
+        <div class="sw-card">
+          <div class="sw-title"><span class="sw-icon">6</span> Microsoft Edge</div>
+          <div class="sw-desc">一般系统默认自带；安装老版本系统时可参考。</div>
+          <div class="sw-links">
+            <a href="https://explore.microsoft.com/zh-cn/edge/download?form=MA13FJ" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 官网</a>
+            <a href="https://c2rsetup.officeapps.live.com/c2r/downloadEdge.aspx?platform=Default&source=EdgeStablePage&Channel=Stable&language=zh-cn&Consent=1&brand=M100" target="_blank" class="btn btn-dl"><span class="btn-icon">↓</span> 下载</a>
+          </div>
+        </div>
+        <div class="sw-card">
+          <div class="sw-title"><span class="sw-icon">7</span> 360 极速浏览器</div>
+          <div class="sw-desc">为了使用 IE 模式。设置好以后非常好用。</div>
+          <div class="sw-links">
+            <a href="https://www.360.cn/" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 官网</a>
+            <a href="https://sedl.360tpcdn.com/cse/360csex_23.1.1312.64.exe" target="_blank" class="btn btn-dl"><span class="btn-icon">↓</span> 下载</a>
+          </div>
+        </div>
+        <div class="sw-card">
+          <div class="sw-title"><span class="sw-icon">8</span> 360 极速安全卫士</div>
+          <div class="sw-desc">为了安装驱动和杀毒，默认 Windows 安全中心够用。</div>
+          <div class="sw-links">
+            <a href="https://www.360.cn/" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 官网</a>
+            <a href="https://dl.360scdn.com/setupbeta_jisu.exe" target="_blank" class="btn btn-dl"><span class="btn-icon">↓</span> 下载</a>
+          </div>
+        </div>
+        <div class="sw-card">
+          <div class="sw-title"><span class="sw-icon">9</span> 7-Zip</div>
+          <div class="sw-desc">个人觉得比较简洁的解压缩软件。</div>
+          <div class="sw-links">
+            <a href="https://7-zip.org/download.html" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 官网</a>
+            <a href="https://github.com/ip7z/7zip/releases/download/26.06/7z2606-x64.exe" target="_blank" class="btn btn-dl"><span class="btn-icon">↓</span> 下载 x64</a>
+          </div>
+        </div>
+        <div class="sw-card">
+          <div class="sw-title"><span class="sw-icon">10</span> MPC-HC x64</div>
+          <div class="sw-desc">本地视频播放器，个人觉得比较简洁。</div>
+          <div class="sw-links">
+            <a href="https://mpc-hc.org/" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 官网</a>
+            <a href="https://github.com/mpc-hc/mpc-hc/releases/download/1.7.13/MPC-HC.1.7.13.x64.exe" target="_blank" class="btn btn-dl"><span class="btn-icon">↓</span> 下载</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="glass-panel">
+      <div class="inner-header">
+        <div class="title"><span class="title-num">11</span> 社交软件</div>
+        <div class="tag">4 项</div>
+      </div>
+      <div class="inner-grid">
+        <div class="sw-card">
+          <div class="sw-title">💬 QQ</div>
+          <div class="sw-desc">腾讯出品的国民级即时通讯软件。</div>
+          <div class="sw-links">
+            <a href="https://im.qq.com/index/#/" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 官网</a>
+            <a href="https://qqdl.gtimg.cn/qqfile/QQNTV2/9.9.37/release/a2ca1b61/QQ_9.9.37_261103_x64_01.exe" target="_blank" class="btn btn-dl"><span class="btn-icon">↓</span> 下载</a>
+          </div>
+        </div>
+        <div class="sw-card">
+          <div class="sw-title">💬 微信</div>
+          <div class="sw-desc">腾讯推出的跨平台通讯与社交工具。</div>
+          <div class="sw-links">
+            <a href="https://weixin.qq.com/" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 官网</a>
+            <a href="https://dldir1v6.qq.com/weixin/Universal/Windows/WeChatWin_4.2.0.exe" target="_blank" class="btn btn-dl"><span class="btn-icon">↓</span> 下载</a>
+          </div>
+        </div>
+        <div class="sw-card">
+          <div class="sw-title">💼 企业微信</div>
+          <div class="sw-desc">专为企业打造的通讯与协同办公工具。</div>
+          <div class="sw-links">
+            <a href="https://work.weixin.qq.com/" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 官网</a>
+            <a href="https://work.weixin.qq.com/wework_admin/commdownload?platform=win&from=wwindex" target="_blank" class="btn btn-dl"><span class="btn-icon">↓</span> 下载</a>
+          </div>
+        </div>
+        <div class="sw-card">
+          <div class="sw-title">📌 钉钉</div>
+          <div class="sw-desc">阿里巴巴出品的企业级协同办公平台。</div>
+          <div class="sw-links">
+            <a href="https://www.dingtalk.com/" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 官网</a>
+            <a href="https://dtapp-cast.dingtalk.com/202611221846/22d2896663acdbbf341825eeb6766efc/dingtalk-desktop/win_downloader/2025031302/dingtalk_downloader.exe" target="_blank" class="btn btn-dl"><span class="btn-icon">↓</span> 下载</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="glass-panel">
+      <div class="inner-header">
+        <div class="title"><span class="title-num">12</span> 学习软件</div>
+        <div class="tag">13 项</div>
+      </div>
+      <div class="inner-grid">
+        <div class="sw-card">
+          <div class="sw-title">📚 学习通</div>
+          <div class="sw-desc">超星集团推出的移动学习与教学平台。</div>
+          <div class="sw-links"><a href="https://www.chaoxing.com/" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 官网</a></div>
+        </div>
+        <div class="sw-card">
+          <div class="sw-title">📚 U 校园</div>
+          <div class="sw-desc">外研社推出的高校外语智慧教学平台。</div>
+          <div class="sw-links"><a href="https://www.unipus.cn/" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 官网</a></div>
+        </div>
+        <div class="sw-card">
+          <div class="sw-title">📚 中国知网</div>
+          <div class="sw-desc">中国国家知识基础设施（CNKI）官网。</div>
+          <div class="sw-links"><a href="https://www.cnki.net/" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 官网</a></div>
+        </div>
+        <div class="sw-card">
+          <div class="sw-title">📚 中国教育考试网</div>
+          <div class="sw-desc">教育部教育考试院官方网站。</div>
+          <div class="sw-links"><a href="https://www.neea.edu.cn/" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 官网</a></div>
+        </div>
+        <div class="sw-card">
+          <div class="sw-title">📚 智慧树</div>
+          <div class="sw-desc">知名的在线教育及学分课程平台。</div>
+          <div class="sw-links"><a href="https://www.zhihuishu.com/" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 官网</a></div>
+        </div>
+        <div class="sw-card">
+          <div class="sw-title">📚 学习强国</div>
+          <div class="sw-desc">综合性、权威性的全民学习平台。</div>
+          <div class="sw-links"><a href="https://www.xuexi.cn/" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 官网</a></div>
+        </div>
+        <div class="sw-card">
+          <div class="sw-title">📚 中国大学 MOOC</div>
+          <div class="sw-desc">网易与高教社携手推出的在线教育平台。</div>
+          <div class="sw-links"><a href="https://www.icourse163.org/" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 官网</a></div>
+        </div>
+        <div class="sw-card">
+          <div class="sw-title">🧩 ScriptCat</div>
+          <div class="sw-desc">脚本猫，开源的用户脚本管理器。</div>
+          <div class="sw-links"><a href="https://scriptcat.org/zh-CN" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 官网</a></div>
+        </div>
+        <div class="sw-card">
+          <div class="sw-title">🎮 Steam 学习平台</div>
+          <div class="sw-desc">全球知名的数字游戏发行与交流平台。</div>
+          <div class="sw-links">
+            <a href="https://store.steampowered.com/" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 官网</a>
+            <a href="https://media.cdn.queniuqe.com/client/installer/SteamSetup.exe" target="_blank" class="btn btn-dl"><span class="btn-icon">↓</span> 下载</a>
+          </div>
+        </div>
+        <div class="sw-card">
+          <div class="sw-title">🎮 WeGame 学习平台</div>
+          <div class="sw-desc">腾讯推出的 PC 游戏下载与分发平台。</div>
+          <div class="sw-links">
+            <a href="https://www.wegame.com.cn/home/" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 官网</a>
+            <a href="https://dldir1.qq.com/tgc/wegame/miniloader/WeGameMiniLoader.std.7.06.27.1446.exe" target="_blank" class="btn btn-dl"><span class="btn-icon">↓</span> 下载</a>
+          </div>
+        </div>
+        <div class="sw-card">
+          <div class="sw-title">🧰 Watt Toolkit</div>
+          <div class="sw-desc">原名 Steam++，实用的网络加速与工具集。</div>
+          <div class="sw-links">
+            <a href="https://steampp.net/" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 官网</a>
+            <a href="https://wwn.lanzouy.com/b01v4iz1g" target="_blank" class="btn btn-dl"><span class="btn-icon">↓</span> 下载</a>
+          </div>
+        </div>
+        <div class="sw-card">
+          <div class="sw-title">🚀 雷神加速器</div>
+          <div class="sw-desc">专为游戏玩家打造的网络加速工具。</div>
+          <div class="sw-links">
+            <a href="https://www.leigod.com/" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 官网</a>
+            <a href="https://www.leigod.com/download-win" target="_blank" class="btn btn-dl"><span class="btn-icon">↓</span> 下载</a>
+          </div>
+        </div>
+        <div class="sw-card">
+          <div class="sw-title">🚀 网易UU加速器</div>
+          <div class="sw-desc">网易推出的专业游戏网络加速器。</div>
+          <div class="sw-links">
+            <a href="https://uu.163.com/" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 官网</a>
+            <a href="https://uu.gdl.netease.com/5257/UU-6.24.0.exe?key1=f577fbda38ead9b72d04cf88b3cf1e26&key2=6b03739c" target="_blank" class="btn btn-dl"><span class="btn-icon">↓</span> 下载</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="glass-panel">
+      <div class="inner-header">
+        <div class="title"><span class="title-num">13</span> 娱乐软件</div>
+        <div class="tag">8 项</div>
+      </div>
+      <div class="inner-grid">
+        <div class="sw-card">
+          <div class="sw-title">🎵 抖音</div>
+          <div class="sw-desc">记录美好生活的短视频与直播平台。</div>
+          <div class="sw-links">
+            <a href="https://www.douyin.com/" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 官网</a>
+            <a href="https://www.douyin.com/download/pc/obj/douyin-pc-web/douyin-pc-client/7044145585217083655/releases/540056698/8.8.0/win32-ia32/douyin-downloader-v8.8.0-win32-ia32-douyincold.exe" target="_blank" class="btn btn-dl"><span class="btn-icon">↓</span> 下载</a>
+          </div>
+        </div>
+        <div class="sw-card">
+          <div class="sw-title">📺 腾讯视频</div>
+          <div class="sw-desc">腾讯旗下的在线视频播放平台。</div>
+          <div class="sw-links">
+            <a href="https://v.qq.com/" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 官网</a>
+            <a href="https://dldir1.qq.com/qqtv/TencentVideo11.191.9669.0_x64.exe?support_redirect=1" target="_blank" class="btn btn-dl"><span class="btn-icon">↓</span> 下载</a>
+          </div>
+        </div>
+        <div class="sw-card">
+          <div class="sw-title">📺 哔哩哔哩</div>
+          <div class="sw-desc">国内知名的年轻人文化社区与视频平台。</div>
+          <div class="sw-links">
+            <a href="https://www.bilibili.com/" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 官网</a>
+            <a href="https://dl.hdslb.com/mobile/fixed/bili_win/bili_win-install.exe?v=1.20.0-1&spm_id_from=333.1007.0.0" target="_blank" class="btn btn-dl"><span class="btn-icon">↓</span> 下载</a>
+          </div>
+        </div>
+        <div class="sw-card">
+          <div class="sw-title">📺 优酷</div>
+          <div class="sw-desc">阿里巴巴旗下的综合在线视频平台。</div>
+          <div class="sw-links">
+            <a href="https://www.youku.com/ku/webhome" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 官网</a>
+            <a href="https://pcclient.download.youku.com/iku-win-release/youkuclient_setup_9.5.4.1001.exe?da_key=a2V5PWZlOWZjYWEzNjYzYzdiODE2OTgyNTJjMzQ0MjdhMWFiJnRzPTE3OTUzNDU1ODkmaXA9MjQwZTo0NDE6MjI2OjEyNjk6ZDU4Njo4NzYxOjJmYWE6ZDU1YSZzZXFubz03MDk0MzY4" target="_blank" class="btn btn-dl"><span class="btn-icon">↓</span> 下载</a>
+          </div>
+        </div>
+        <div class="sw-card">
+          <div class="sw-title">📺 爱奇艺</div>
+          <div class="sw-desc">中国领先的高品质在线视频网站。</div>
+          <div class="sw-links">
+            <a href="https://www.iqiyi.com/" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 官网</a>
+            <a href="https://dl-static.iqiyi.com/hz/IQIYIsetup_w05n.exe" target="_blank" class="btn btn-dl"><span class="btn-icon">↓</span> 下载</a>
+          </div>
+        </div>
+        <div class="sw-card">
+          <div class="sw-title">🎧 酷狗音乐</div>
+          <div class="sw-desc">国内知名的数字音乐交互服务提供商。</div>
+          <div class="sw-links">
+            <a href="https://www.kugou.com/" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 官网</a>
+            <a href="https://download.kugou.com/dl/kugou_pc" target="_blank" class="btn btn-dl"><span class="btn-icon">↓</span> 下载</a>
+          </div>
+        </div>
+        <div class="sw-card">
+          <div class="sw-title">🎧 QQ音乐</div>
+          <div class="sw-desc">腾讯旗下的正版数字音乐平台。</div>
+          <div class="sw-links">
+            <a href="https://y.qq.com/" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 官网</a>
+            <a href="https://dldir.y.qq.com/ecosfile/music_clntupate/pc/other/QQMusic_Setup_2282.exe?sign=1795345677-WIahF5UcjzIx9Yba-0-3c978840dbc7eb894dbab5697571e046" target="_blank" class="btn btn-dl"><span class="btn-icon">↓</span> 下载</a>
+          </div>
+        </div>
+        <div class="sw-card">
+          <div class="sw-title">🎧 网易云音乐</div>
+          <div class="sw-desc">网易旗下的音乐平台，以社区文化著称。</div>
+          <div class="sw-links">
+            <a href="https://music.163.com/#" target="_blank" class="btn btn-official"><span class="btn-icon">i</span> 官网</a>
+            <a href="https://d8.music.126.net/dmusic2/NeteaseCloudMusic_Music_official_3.1.43.205627_64.exe" target="_blank" class="btn btn-dl"><span class="btn-icon">↓</span> 下载</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // 页面路由逻辑
+  const sections = ['#home', '#sys-genuine', '#sys-ghost', '#software'];
+
+  function navigateTo(hash) {
+    if (!hash || !sections.includes(hash)) {
+      hash = '#home';
+    }
+
+    sections.forEach(id => {
+      const el = document.querySelector(id);
+      if (el) el.style.display = 'none';
+    });
+
+    const target = document.querySelector(hash);
+    if (target) {
+      target.style.display = 'block';
+      target.style.animation = 'none';
+      target.offsetHeight; 
+      target.style.animation = 'fadeIn 0.4s ease forwards';
+    }
+
+    document.querySelectorAll('.nav-links a').forEach(a => {
+      a.classList.remove('active');
+      if (a.getAttribute('onclick').includes(hash)) {
+        a.classList.add('active');
+      }
+    });
+
+    history.replaceState(null, null, hash);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const initialHash = window.location.hash;
+    navigateTo(initialHash);
+  });
+
+  window.addEventListener('popstate', () => {
+    navigateTo(window.location.hash);
+  });
+</script>
+
+</body>
+</html>
